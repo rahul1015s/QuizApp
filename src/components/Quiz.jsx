@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import QUESTIONS from '../question.js';
+import QuestionTimer from './QuestionTimer.jsx';
+
 
 export default function Quiz() {
     const [userAnswer, setUserAnswer] = useState([]);
@@ -36,8 +38,9 @@ export default function Quiz() {
     // Display the current question and answers
     return (
         <div className='p-8 max-w-lg mx-auto bg-gradient-to-r from-blue-500 to-teal-400 rounded-xl shadow-xl'>
+            <QuestionTimer timeout={10000} onTimeout={() => handleAnswer(null) } />
             <h2 className='text-3xl font-extrabold text-white mb-6'>{QUESTIONS[activeQuestionIndex].text}</h2>
-            
+
             <ul className='space-y-4'>
                 {/* Map over the shuffled answers and render each as a button */}
                 {shuffledAnswers.map((answer) => (
