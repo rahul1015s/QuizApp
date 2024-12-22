@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import QUESTIONS from '../question.js';
 import QuestionTimer from './QuestionTimer.jsx';
 
@@ -13,11 +13,13 @@ export default function Quiz() {
     const quizIsComplete = activeQuestionIndex === QUESTIONS.length;
 
     // Handle selecting an answer by adding the selected answer to the userAnswer array
-    function handleAnswer(selectedAnswer) {
+    const handleSelectAnswer = useCallback(function handleSelectAnswer(selectedAnswer) {
         setUserAnswer((prevUserAnswer) => {
             return [...prevUserAnswer, selectedAnswer];
         });
-    }
+    },[]);
+
+    const handleSkipAnswer = useCallback(() => handleSelectAnswer(null), [handleSelectAnswer]); 
 
     // Display "Quiz is Completed!" message when the quiz is done
     if (quizIsComplete) {
@@ -38,7 +40,13 @@ export default function Quiz() {
     // Display the current question and answers
     return (
         <div className='p-8 max-w-lg mx-auto bg-gradient-to-r from-blue-500 to-teal-400 rounded-xl shadow-xl'>
-            <QuestionTimer timeout={10000} onTimeout={() => handleAnswer(null) } />
+            <QuestionTimer 
+            // The `key` ensures that the timer component is reset whenever the active question changes.
+            // When `activeQuestionIndex` changes, React unmounts the previous `QuestionTimer` 
+            // and mounts a new one, which resets the timer state.
+            key={activeQuestionIndex}
+            timeout={8000} 
+            onTimeout={handleSkipAnswer} />
             <h2 className='text-3xl font-extrabold text-white mb-6'>{QUESTIONS[activeQuestionIndex].text}</h2>
 
             <ul className='space-y-4'>
@@ -46,7 +54,7 @@ export default function Quiz() {
                 {shuffledAnswers.map((answer) => (
                     <li key={answer}>
                         <button 
-                            onClick={() => handleAnswer(answer)} 
+                            onClick={() => handleSelectAnswer(answer)} 
                             className='w-full px-6 py-3 bg-white text-gray-800 rounded-lg shadow-md transform transition-all duration-300 ease-in-out hover:scale-105 hover:bg-teal-600 hover:text-white focus:outline-none'>
                             {answer}
                         </button>
