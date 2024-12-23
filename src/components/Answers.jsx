@@ -33,12 +33,13 @@ export default function Answers({
                 return (
                     <li key={answer}>
                         <button
-                            onClick={() => onSelect(answer)}
-                            className={`w-full px-6 py-3 rounded-lg shadow-md transform transition-all duration-300 ease-in-out hover:scale-105 focus:outline-none ${cssClass}`}
-                            disabled={answerState !== ''} // Disable buttons once an answer is selected
-                        >
-                            {answer}
+                                onClick={() => onSelect(answer)}
+                                className={`w-full px-6 py-3 rounded-lg shadow-md transform transition-all duration-300 ease-in-out hover:scale-105 focus:outline-none ${cssClass} button-hover`}
+                                disabled={answerState !== ''} // Disable buttons once an answer is selected
+                                >
+                                {answer}
                         </button>
+
                     </li>
                 );
             })}

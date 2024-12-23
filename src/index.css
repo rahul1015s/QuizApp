@@ -16,3 +16,12 @@ body {
   p {
     @apply text-base sm:text-lg md:text-xl;
   }
+
+
+  .button-hover:hover {
+   
+    color: #000;
+    transform: scale(1.05);
+    transition: all 0.2s ease-in-out;
+  }
+  
